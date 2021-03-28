@@ -10,6 +10,7 @@ import { Product } from './schemas/Product';
 import { User } from './schemas/User';
 import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
+import { extendGraphqlSchema } from './mutations';
 
 const databaseURL =
   process.env.DATABASE_URL || 'mongodb://localhost/keystone-next-store';
@@ -56,6 +57,7 @@ export default withAuth(
       ProductImage,
       CartItem,
     }),
+    extendGraphqlSchema,
     ui: {
       // Show the UI only for poeple who pass this test
       isAccessAllowed: ({ session }) =>
