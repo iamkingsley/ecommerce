@@ -4,6 +4,8 @@ import {
   withItemData,
   statelessSessions,
 } from '@keystone-next/keystone/session';
+import { OrderItem } from './schemas/OrderItem';
+import { Order } from './schemas/Order';
 import { CartItem } from './schemas/CartItem';
 import { ProductImage } from './schemas/ProductImage';
 import { Product } from './schemas/Product';
@@ -13,7 +15,7 @@ import { sendPasswordResetEmail } from './lib/mail';
 import { extendGraphqlSchema } from './mutations';
 
 const databaseURL =
-  process.env.DATABASE_URL || 'mongodb://localhost/keystone-next-store';
+process.env.DATABASE_URL || 'mongodb://localhost/keystone-next-store';
 
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
@@ -56,6 +58,8 @@ export default withAuth(
       Product,
       ProductImage,
       CartItem,
+      OrderItem,
+      Order,
     }),
     extendGraphqlSchema,
     ui: {
