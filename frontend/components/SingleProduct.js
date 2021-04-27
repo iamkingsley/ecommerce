@@ -26,6 +26,7 @@ const SINGLE_ITEM_QUERY = gql`
       description
       id
       photo {
+        id
         altText
         image {
           publicUrlTransformed
@@ -44,10 +45,11 @@ export default function SingleProduct({ id }) {
   if (loading) return <p>Loading...</p>;
   if (error) return <DisplayError error={error} />;
   const { Product } = data;
+  console.log(Product);
   return (
     <ProductStyles>
       <Head>
-        <title>Sick Fits | {Product.name}</title>
+        <title>Pro Store | {Product.name}</title>
       </Head>
       <img
         src={Product?.photo?.image?.publicUrlTransformed}

@@ -42,7 +42,6 @@ export default function CreateProduct() {
     CREATE_PRODUCT_MUTATION,
     {
       variables: inputs,
-      // refetch all products after this
       refetchQueries: [{ query: ALL_PRODUCTS_QUERY }],
     }
   );
@@ -50,14 +49,13 @@ export default function CreateProduct() {
     <Form
       onSubmit={async (e) => {
         e.preventDefault();
-        console.log(inputs);
         // Submit the inputfields to the backend:
         const res = await createProduct();
+        clearForm();
         // Go to that product's page!
         Router.push({
-          pathname: `/products/${res.data.createProduct.id}`,
+          pathname: `/product/${res.data.createProduct.id}`,
         });
-        clearForm();
       }}
     >
       <DisplayError error={error} />
