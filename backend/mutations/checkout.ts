@@ -1,5 +1,3 @@
-import { CartItem } from '../schemas/CartItem';
-import { User } from '../schemas/User';
 import {
   CartItemCreateInput,
   OrderCreateInput,
@@ -7,18 +5,12 @@ import {
 
 /* eslint-disable */
 import { KeystoneContext, SessionStore } from '@keystone-next/types';
-import stripeConfig from '../lib/stripe';
 
 const graphql = String.raw;
 
-interface Arguments {
-  token: string
-}
-
-
 async function checkout(
   root: any,
-  { token }: Arguments,
+  args: any,
   context: KeystoneContext
 ): Promise<OrderCreateInput> {
   // 1. Make sure they are signed in
@@ -59,18 +51,7 @@ async function checkout(
     return tally + cartItem.quantity * cartItem.product.price;
   }, 0);
   console.log(amount);
-  // 3. create the charge with the stripe library
-  const charge = await stripeConfig.paymentIntents.create({
-    amount,
-    currency: 'USD',
-    confirm: true,
-    payment_method: token,
-  }).catch(err => {
-    console.log(err);
-    throw new Error(err.message);
-  });
-  console.log(charge)
-  // 4. Convert the cartItems to OrderItems
+  // 3. Convert the cartItems to OrderItems
   const orderItems = cartItems.map(cartItem => {
     const orderItem = {
       name: cartItem.product.name,
@@ -81,17 +62,16 @@ async function checkout(
     }
     return orderItem;
   })
-  // 5. Create the order and return it
+  // 4. Create the order and return it
   const order = await context.lists.Order.createOne({
     data: {
-      total: charge.amount,
-      charge: charge.id,
+      total: amount,
       items: { create: orderItems },
       user: { connect: { id: userId }}
     },
     resolveFields: false,
   });
-  // 6. Clean up any old cart item
+  // 5. Clean up any old cart item
   const cartItemIds = cartItems.map(cartItem => cartItem.id);
   await context.lists.CartItem.deleteMany({
     ids: cartItemIds

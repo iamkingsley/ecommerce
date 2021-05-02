@@ -9,7 +9,6 @@ const SINGLE_ORDER_QUERY = gql`
   query SINGLE_ORDER_QUERY($id: ID!) {
     order: Order(where: { id: $id }) {
       id
-      charge
       total
       user {
         id
@@ -46,21 +45,20 @@ export default function SingleOrderPage({ query }) {
         <span>{order.id}</span>
       </p>
       <p>
-        <span>Charge:</span>
-        <span>{order.charge}</span>
-      </p>
-      <p>
         <span>Order Total:</span>
         <span>{formatMoney(order.total)}</span>
       </p>
       <p>
-        <span>ItemCount:</span>
+        <span>Item count:</span>
         <span>{order.items.length}</span>
       </p>
       <div className="items">
         {order.items.map((item) => (
           <div className="order-item" key={item.id}>
-            <img src={item.photo.image.publicUrlTransformed} alt={item.title} />
+            <img
+              src={item.photo?.image?.publicUrlTransformed}
+              alt={item.title}
+            />
             <div className="item-details">
               <h2>{item.name}</h2>
               <p>Qty: {item.quantity}</p>

@@ -64,7 +64,7 @@ export default function Cart() {
       </ul>
       <footer>
         <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-        <Checkout />
+        {me.cart.length && <Checkout />}
       </footer>
     </CartStyles>
   );

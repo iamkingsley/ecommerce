@@ -3,7 +3,6 @@ const formatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-export default function formatMoney(cents: number) {
-  const dollars = cents / 100;
-  return formatter.format(dollars);
+export default function formatMoney(amount: number) {
+  return formatter.format(amount);
 }
