@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/dist/client/router';
 import Form from './styles/Form';
 import useForm from '../lib/useForm';
 import { CURRENT_USER_QUERY } from './User';
@@ -34,14 +35,21 @@ export default function SignIn() {
     // refetch the currently logged in user
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
+
+  const router = useRouter();
   async function handleSubmit(e) {
     e.preventDefault(); // stop the form from submitting
     console.log(inputs);
     const res = await signin();
     console.log(res);
+    if (res) {
+      router.push({
+        pathname: '/',
+      });
+    }
     resetForm();
-    // Send the email and password to the graphqlAPI
   }
+  // Send the email and password to the graphqlAPI
   const error =
     data?.authenticateUserWithPassword.__typename ===
     'UserAuthenticationWithPasswordFailure'

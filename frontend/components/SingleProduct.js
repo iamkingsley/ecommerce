@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import Head from 'next/head';
 import styled from 'styled-components';
 import DisplayError from './ErrorMessage';
+import AddToCart from './AddToCart';
 
 const ProductStyles = styled.div`
   display: grid;
@@ -58,6 +59,7 @@ export default function SingleProduct({ id }) {
       <div className="details">
         <h2>{Product.name}</h2>
         <p>{Product.description}</p>
+        <AddToCart id={Product.id} text="Add to Cart" />
       </div>
     </ProductStyles>
   );

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import styled from 'styled-components';
+import Grid from '@material-ui/core/Grid';
 import { perPage } from '../config';
 import Product from './Product';
 
@@ -21,12 +21,6 @@ export const ALL_PRODUCTS_QUERY = gql`
   }
 `;
 
-const ProductsListStyles = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 60px;
-`;
-
 export default function Products({ page }) {
   const { data, error, loading } = useQuery(ALL_PRODUCTS_QUERY, {
     variables: {
@@ -38,11 +32,11 @@ export default function Products({ page }) {
   if (error) return <p>Error: {error.message}</p>;
   return (
     <div>
-      <ProductsListStyles>
+      <Grid container spacing={2}>
         {data?.allProducts?.map((product) => (
           <Product key={product.id} product={product} />
         ))}
-      </ProductsListStyles>
+      </Grid>
     </div>
   );
 }
